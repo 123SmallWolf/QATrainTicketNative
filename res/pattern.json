@@ -1,0 +1,92 @@
+{
+  "enter_domain":
+  [
+    { "level":42, "confidence": 0.90, "pattern":".*?<city>.*?(?:到|去|至).*?<city>.*?(?:火车票|车票|火车)", "departure":"first", "arrival":"second", "departureDate":"", "attitude":"" },
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:去|到)<city>.*?<city>.*?(?:出发).*?(?:火车票|车票|火车)", "departure":"second", "arrival":"first", "departureDate":"", "attitude":"" },
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:去|到)<city>.*?(?:火车票|车票|火车)", "departure":"", "arrival":"first", "departureDate":"", "attitude":"" },
+    { "level":42, "confidence": 0.60, "pattern":"(?:目的地|目的城市|终点).*?<city>", "departure":"", "arrival":"first", "departureDate":"", "attitude":"" },
+    { "level":42, "confidence": 0.60, "pattern":"(?:出发地|出发城市|始发地|始发城市|起点|起始).*?<city>", "departure":"first", "arrival":"", "departureDate":"", "attitude":"" },
+    { "level":42, "confidence": 0.90, "pattern":".*?(?<!不想)(?:订|买|抢|来|定|改|坐|乘).*?(?:火车票|火车).*?", "departure":"", "arrival":"", "departureDate":"", "attitude":"" }
+  ],
+  "tune_time":
+  [
+    { "level":42, "confidence": 0.65, "pattern":".*?(?:前一天).*?", "departureDate":"-1", "departureTime":"" },
+    { "level":42, "confidence": 0.65, "pattern":".*?(?:后一天).*?", "departureDate":"+1", "departureTime":"" },
+    { "level":42, "confidence": 0.65, "pattern":".*?(?:出发时间)?.*?(?:早一点|早一些|早点).*?", "departureDate":"", "departureTime":"-" },
+    { "level":42, "confidence": 0.65, "pattern":".*?(?:上一组).*?", "departureDate":"", "departureTime":"-" },
+    { "level":42, "confidence": 0.65, "pattern":".*?(?:出发时间)?.*?(?:晚一点|晚一些|晚点).*?", "departureDate":"", "departureTime":"+" },
+    { "level":42, "confidence": 0.65, "pattern":".*?(?:下一组|其他).*?", "departureDate":"", "departureTime":"+" },
+    { "level":42, "confidence": 0.65, "pattern":".*?(?:出发时间).*?(?:改).*?", "departureDate":"?", "departureTime":"?" },
+    { "level":42, "confidence": 0.65, "pattern":".*?(?:今天|明天|后天|大后天).*?(?:上午|中午|下午|晚上|凌晨).*?(?:出发)?.*?", "departureDate":"?", "departureTime":"?" },
+    { "level":42, "confidence": 0.65, "pattern":"(?<!今天|明天|后天|下周).*?(?:上午|中午|下午|晚上|凌晨).*?(?:出发)?.*?", "departureDate":"", "departureTime":"?" },
+    { "level":42, "confidence": 0.60, "pattern":"(?:今天|明天|后天|这周|下周|下下周|这星期|下星期|下个星期|下下星期).*?", "departureDate":"?", "departureTime":"" },
+    { "level":42, "confidence": 0.60, "pattern":"((?:下个|下|[0-9零一二三四五六七八九十]{1,2})(?:月)(?:初)?[0-9零一二三四五六七八九十]{1,3}(?:日|号)?)", "departureDate":"?", "departureTime":"" },
+    { "level":42, "confidence": 0.60, "pattern":"((?:初)?[0-9零一二三四五六七八九十]{1,3}(?:日|号))", "departureDate":"?", "departureTime":"" },
+    { "level":42, "confidence": 0.60, "pattern":"((?:这|下|下个)?(?:周|星期|礼拜)[1-6一二三四五六日])", "departureDate":"?", "departureTime":"" },
+    { "level":42, "confidence": 0.60, "pattern":"((?<!早|晚)[0-9零一二三四五六七八九十两]{1,3}(?:点|\\:|：)(?:一刻|正|整|半|[0-9零一二三四五六七八九十]{1,3}分?)?)", "departureDate":"", "departureTime":"?" }
+  ],
+  "attitudes":
+  [
+    { "level":42, "confidence": 0.61, "pattern":"^(?:是|是的|没错).*?", "attitude": "p"},
+    { "level":42, "confidence": 0.61, "pattern":"^(?:不|不是|不是的|否)[^想用].*?", "attitude": "n" }
+  ],
+  "train_type":
+  [
+    { "level":42, "confidence": 0.90, "pattern":".*?(?<!城际)(?:高铁)和?(?:动车).*?", "trainType":["D","G"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?<!城际)(?:动车)和?(?:高铁).*?", "trainType":["D","G"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?<!城际)(?:动车).*?", "trainType":["D"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?<!城际)(?:高铁).*?", "trainType":["G"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:特快).*?", "trainType":["T"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:普快).*?", "trainType":["K"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:直达).*?", "trainType":["Z"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:城际).*?", "trainType":["C"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:绿皮).*?", "trainType":["T", "K", "Z"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:卧铺).*?", "trainType":["T", "K", "Z"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:普快)和?(?:特快).*?", "trainType":["T", "K"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:特快)和?(?:普快).*?", "trainType":["T", "K"]},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:都可以|都行|没有要求|无要求|全选).*?", "trainType":["D","G","T","K","Z","C"]},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:没有).*?", "trainType":["D","G","T","K","Z","C"]}
+  ],
+  "seat_type":
+  [
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:高级软卧).*?", "seatType":["高级软卧"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:软卧).*?", "seatType":["软卧"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:软座).*?", "seatType":["软座"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:硬卧).*?", "seatType":["硬卧"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:硬座).*?", "seatType":["硬座"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:卧铺).*?", "seatType":["软卧", "硬卧"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:二等座|2等座).*?", "seatType":["二等座"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:一等座|1等座).*?", "seatType":["一等座"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:商务座).*?", "seatType":["商务座"]},
+    { "level":42, "confidence": 0.90, "pattern":".*?(?:无座|站票).*?", "seatType":["无座"]},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:都可以|都行|没有要求|无要求|全选).*?", "seatType":["高级软卧", "软卧", "软座", "硬卧", "硬座", "二等座", "一等座", "商务座"]},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:没有).*?", "seatType":["高级软卧", "软卧", "软座", "硬卧", "硬座", "二等座", "一等座", "商务座"]}
+  ],
+  "sequence":
+  [
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:只看有票).*?", "selectSequenceBy":"existTickets" },
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:只看有座).*?", "selectSequenceBy":"existSeats" },
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:时长|乘车时间).*?(?:最短|最少).*?", "selectSequenceBy":"minPeriod" }
+  ],
+  "bookOrBye":
+  [
+    { "level":42, "confidence": 0.60, "pattern":".*?(?:预定|就这个|就选这个).*?", "attitude": "p"},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:买|定|订|选|购买|预定|选择)?[A-Za-z]*[0-9]+.*?(^点).*?", "attitude": "p"},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:买|定|订|选|购买|预定|选择)?第[一二三123]+.*?", "attitude": "p"},
+    { "level":42, "confidence": 0.60, "pattern":".*?(?:退出|不定了|不买了|不订了|结束|不用|不需要|不必).*?", "attitude": "n"},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?<!不)(?:需要|继续).*?", "attitude": "pn"},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:还有)?.*?(?:其他).*?", "attitude": "?"}
+  ],
+  "crossArea":
+  [
+    { "level":42, "confidence": 0.70, "pattern":".*?(?<!不想)(?:换|坐|换乘)飞机.*?"},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:不想坐火车).*?"},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:不想买火车票).*?"},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:看|查).*?机票.*?"}
+  ],
+  "others":
+  [
+    { "level":42, "confidence": 0.50, "pattern":".*?(?:天气|温度|湿度|气象|雨|雪|雾霾|霜).*?"},
+    { "level":42, "confidence": 0.50, "pattern":".*?(?<!不想)(?:订|买|抢|来|定).*?(?:机票).*?"}
+  ]
+}
