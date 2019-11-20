@@ -10,6 +10,9 @@ import os
 import json
 import copy
 import re
+import logging
+
+SLOG = logging.getLogger('Frame')
 
 
 whole_nlu_state = ['enter_domain', 'u_earlier', 'u_later', 'u_departure_and_arrival',
@@ -141,6 +144,8 @@ class Frame(object):
             elif severQuesGenerated == '请您输入出行信息':
                 self.__clear_inform()
                 self.newUserDate = {'orgCity': None, 'desCity': None, 'departDate': None}
+            print('AAAAAAAAAAAAAAAAAAAAAAAAAAAA\n')
+            print(severQuesGenerated)
             return severQuesGenerated, '{:.2f}'.format(self.confidence), self.slotInfo, self.slotInfo['sessionOver'], self.newUserDate
 
         else:

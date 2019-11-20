@@ -12,12 +12,12 @@ from src.nlg.query import query_tickets
 
 def gain_answer_pattern(flag):
     answer_pattern = {
-        "confirm": "根据您的需求，小智向您推荐<date>，从<departure>到<arrival>以下班次的列车，您可以选择[第一个/第二个]预定车次或更改查询条件再次查询",
+        "confirm": "根据您的需求，小智向您推荐<date>，从<departure>到<arrival>以下班次的列车，您可以选择适合的车次或更改查询条件再次查询",
         "confirmButEmpty": "小智没有为您查询到有效的列车信息，您可以修改查询信息再次尝试查询",
         "confirmButEmptyBySeat": "根据您选择的席别和出发时间，目前所有车次该席别的车票都已售尽，您可以选择其他席别或调整出发时间后再尝试查询。",
         "confirmButEmptyByLatest": "根据您选择的出发时间，已经没有更晚车次为您推荐，您可以输入已推荐车次编号购买车票或调整出发时间后再尝试查询。",
         "confirmButEmptyByEarliest": "根据您选择的出发时间，已经没有更早车次为您推荐，您可以输入已推荐车次编号购买车票或调整出发时间后再尝试查询。",
-        "supportBOOKLink": "好的，您可以点击下方链接或复制下方链接到网页购买车票：",
+        "supportBOOKLink": "好的，您可以点击下方链接到12306铁路售票官方网站购买车票：",
         "askDepartureDate": "请问您的出行日期和出发时间？",
         "askDepartureTime": "请问您对出发时间有要求吗？",
         "askDeparture": "请问您的出发城市？",
@@ -28,7 +28,7 @@ def gain_answer_pattern(flag):
         "askMoreServices": "请问您还需要查询其他车次吗？",
         "continueQuery": "请您输入出行信息",
         "reAskDeparture": "您选择的出发地和目的地相同，请您重新输入出发城市",
-        "stopQuery": "好的，期待您下次继续使用火车票查询服务，小智将竭诚为您服务！",
+        "stopQuery": "好的，如果您有其他需求也可以告诉小智，小智将竭诚为您服务！",
         "askToKnownCity": "请问您是想预定去<arrival>的火车票吗？",
         "makeSureToLastMentionedCity": "请问您是想预定去<arrival>的火车票吗？",
         "prepareCrossArea": None
@@ -108,15 +108,17 @@ def nlg_process(severQuesFlag, slotInfo, rootPath):
     if slotInfo['nluState'] == 'u_book':
         _, url = query_tickets(slotInfo, rootPath)
         url = urllib.parse.unquote(url, encoding="utf-8")
+        print('CCCCCCCCCCCCCCCCCCCCCCCCCCC\n')
+        print(url)
         url2 = str(url)
-        bookLink = '<a target="_blank" href=' + url2 + '>立即订票</a>'
-        # inputStr = '<a target="_blank" href="/item/%E6%95%99%E5%AD%A6">教学</a>'
-        bookLink = '<a target="_blank" href=' + url2 + '>立即订票</a>'
+        bookLink = '<a target="_blank" href=' + '\"' + url2 + '\"' + '>立即订票</a>'
         bookLink = str(bookLink)
         # bookLink = <a href="" target="_blank">立即订票</a>
         # bookLink = '<a href=\"' + url + '\" target=\"_blank\">立即订票</a>'
         # return gain_answer_pattern(severQuesFlag) + '\n' + url + '\n' + gain_answer_pattern('askMoreServices'), slotInfo
-        return bookLink, slotInfo
+        print('BBBBBBBBBBBBBBBBBBBBBBBBBB\n')
+        print(bookLink)
+        return gain_answer_pattern(severQuesFlag) + bookLink + '\n' + gain_answer_pattern('askMoreServices'), slotInfo
     elif severQuesFlag in ['askToKnownCity', 'makeSureToLastMentionedCity']:
         severQues = gain_answer_pattern(severQuesFlag)
         severQues = re.sub(r'<arrival>', slotInfo['arrival'], severQues)

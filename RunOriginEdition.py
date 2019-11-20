@@ -5,6 +5,8 @@
 # @File    : RunOriginEdition.py
 from Frame import Frame
 from pprint import pprint
+from sysLog import setup_logging
+setup_logging()
 
 # server_date = {"place": [{"province": "山东省", "city": "青岛市", "departDate": "2019-11-11"}]}
 server_date = None

@@ -23,11 +23,18 @@ def query_tickets(slotInfo, rootPath):
 
     left_url = 'https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date=2019-10-23&leftTicketDTO.from_station=WHN&leftTicketDTO.to_station=TJP&purpose_codes=ADULT'
 
-    data = {'linktypeid': 'dc',
-            'fs': None,
-            'ts': None,
-            'data': None,
-            'flag': None}
+    data = collections.OrderedDict()
+    data['linktypeid'] = 'dc'
+    # data['fs'] = None
+    # data['ts'] = None
+    # data['data'] = None
+    # data['flag'] = None
+
+    # data = {'linktypeid': 'dc',
+    #         'fs': None,
+    #         'ts': None,
+    #         'data': None,
+    #         'flag': None}
 
     data['fs'] = slotInfo['departure']
     data['ts'] = slotInfo['arrival']
@@ -50,11 +57,17 @@ def query_tickets(slotInfo, rootPath):
 
     q = requests.Session()
     url1 = init_url + '?' + payload
+    # https://kyfw.12306.cn/otn/leftTicket/init?fs=%E5%8C%97%E4%BA%AC,BJP&linktypeid=dc&flag=N,N,Y&ts=%E9%94%A6%E5%B7%9E,JZD&data=2019-11-20
+    print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\n')
+    print(url1)
     r = q.get(url1, headers=headers)
 
     l = q.get(left_url, headers=headers)
 
     inf = js_transform(json.loads(l.text)['data']['result'], rootPath, slotInfo)
+
+    print('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD\n')
+    print(r.url)
 
     return inf, r.url
 

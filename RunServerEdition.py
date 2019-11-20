@@ -12,7 +12,7 @@ import json
 
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+# CORS(app, supports_credentials=True)
 bootstrap = Bootstrap(app)
 QATrainTickets = Frame()
 

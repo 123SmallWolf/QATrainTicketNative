@@ -71,7 +71,8 @@
   "bookOrBye":
   [
     { "level":42, "confidence": 0.60, "pattern":".*?(?:预定|就这个|就选这个).*?", "attitude": "p"},
-    { "level":42, "confidence": 0.70, "pattern":".*?(?:买|定|订|选|购买|预定|选择)?[A-Za-z]*[0-9]+.*?(^点).*?", "attitude": "p"},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:买|定|订|选|购买|预定|选择)?[A-Za-z]+[0-9]+.*?[^点].*?", "attitude": "p"},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:买|定|订|选|购买|预定|选择)?[0-9]{4}.*?[^点].*?", "attitude": "p"},
     { "level":42, "confidence": 0.70, "pattern":".*?(?:买|定|订|选|购买|预定|选择)?第[一二三123]+.*?", "attitude": "p"},
     { "level":42, "confidence": 0.60, "pattern":".*?(?:退出|不定了|不买了|不订了|结束|不用|不需要|不必).*?", "attitude": "n"},
     { "level":42, "confidence": 0.70, "pattern":".*?(?<!不)(?:需要|继续).*?", "attitude": "pn"},
