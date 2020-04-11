@@ -40,7 +40,7 @@ function sendMessage(str){
     // console.log(datas)
 
     $.ajax({
-       url: "http://127.0.0.1:5000/register_Response",
+       url: "http://127.0.0.1:5000/register_Response",  // 127.0.0.1:5000  0.0.0.0:80
        type: 'POST',
        data: datas,
        success: function(data){

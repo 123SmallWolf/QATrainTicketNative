@@ -7,7 +7,9 @@ from src.nlp_tools.entityExtractor import extractor
 import json
 import re
 import datetime
-
+import logging
+logger = logging.getLogger('Frame.nlu')
+logger.info('hello')
 
 def date_change(currentData, flag: int):
     assert isinstance(flag, int), '更改日期出错'
@@ -133,61 +135,6 @@ def check_location(locationList, rootPath):
 
 def understand_departure_and_arrival(clientQues, slotInfo, nluPattern, confidence, rootPath):
     """"获取出发城市和到达城市"""
-    Patterns = nluPattern['enter_domain']
-    for pat in Patterns:
-        regex = re.compile(pat['pattern'])
-        if regex.search(clientQues) is not None:
-            location = get_location(clientQues)
-            check_location(location, rootPath)
-            for loc in location:
-                clientQues = re.sub(loc, '<city>', clientQues)
-
-            if pat['departure'] == 'first' and pat['arrival'] == 'second':
-                slotInfo['departure'] = location[0]
-                slotInfo['arrival'] = location[1]
-                slotInfo['nluState'] = 'u_departure_and_arrival'
-                confidence = pat['confidence']
-                break
-
-            if pat['departure'] == 'second' and pat['arrival'] == 'first':
-                slotInfo['departure'] = location[1]
-                slotInfo['arrival'] = location[0]
-                slotInfo['nluState'] = 'u_departure_and_arrival'
-                confidence = pat['confidence']
-                break
-
-            if pat['departure'] == '' and pat['arrival'] == 'first':
-                slotInfo['arrival'] = location[0]
-                slotInfo['nluState'] = 'u_departure_and_arrival'
-                confidence = pat['confidence']
-                break
-
-            if pat['departure'] == 'first' and pat['arrival'] == '':
-                slotInfo['departure'] = location[0]
-                slotInfo['nluState'] = 'u_departure_and_arrival'
-                confidence = pat['confidence']
-                break
-
-            if pat['departure'] == '' and pat['arrival'] == '':
-                if slotInfo['newUsrDate']['desCity'] is not None or slotInfo['newUsrDate']['orgCity'] is not None:
-                    slotInfo['arrival'] = slotInfo['newUsrDate']['desCity']
-                    slotInfo['departure'] = slotInfo['newUsrDate']['orgCity']
-                    slotInfo['departureDate'] = slotInfo['newUsrDate']['departDate']
-                    slotInfo['nluState'] = 'u_departure_and_arrival'
-                # elif slotInfo['lastCityMentioned'] is not None:
-                #     slotInfo['arrival'] = slotInfo['lastCityMentioned']
-                #     slotInfo['nluState'] = 'u_departure_and_arrival'
-                elif slotInfo['lastCityMentioned'] is not None:
-                    slotInfo['nluState'] = 'u_to_last_mentioned_city'
-
-                else:
-                    slotInfo['nluState'] = 'u_departure_and_arrival'
-
-                confidence = pat['confidence']
-                break
-        else:
-            continue
-
     if slotInfo['nlgState'] == 'askDeparture':
         location = get_location(clientQues)
         check_location(location, rootPath)
@@ -195,19 +142,75 @@ def understand_departure_and_arrival(clientQues, slotInfo, nluPattern, confidenc
             slotInfo['departure'] = location[0]
             slotInfo['nluState'] = 'u_departure_and_arrival'
 
-    if slotInfo['nlgState'] == 'reAskDeparture':
+    elif slotInfo['nlgState'] == 'reAskDeparture':
         location = get_location(clientQues)
         check_location(location, rootPath)
         if len(location) > 0:
             slotInfo['departure'] = location[0]
             slotInfo['nluState'] = 'u_departure_and_arrival'
 
-    if slotInfo['nlgState'] == 'askArrival':
+    elif slotInfo['nlgState'] == 'askArrival':
         location = get_location(clientQues)
         check_location(location, rootPath)
         if len(location) > 0:
             slotInfo['arrival'] = location[0]
             slotInfo['nluState'] = 'u_departure_and_arrival'
+
+    else:
+        Patterns = nluPattern['enter_domain']
+        location = get_location(clientQues)
+        if len(location) > 0:
+            check_location(location, rootPath)
+            for loc in location:
+                clientQues = re.sub(loc, '<city>', clientQues)
+        for pat in Patterns:
+            regex = re.compile(pat['pattern'])
+            if regex.search(clientQues) is not None:
+                if pat['departure'] == 'first' and pat['arrival'] == 'second':
+                    slotInfo['departure'] = location[0]
+                    slotInfo['arrival'] = location[1]
+                    slotInfo['nluState'] = 'u_departure_and_arrival'
+                    confidence = pat['confidence']
+                    break
+
+                if pat['departure'] == 'second' and pat['arrival'] == 'first':
+                    slotInfo['departure'] = location[1]
+                    slotInfo['arrival'] = location[0]
+                    slotInfo['nluState'] = 'u_departure_and_arrival'
+                    confidence = pat['confidence']
+                    break
+
+                if pat['departure'] == '' and pat['arrival'] == 'first':
+                    slotInfo['arrival'] = location[0]
+                    slotInfo['nluState'] = 'u_departure_and_arrival'
+                    confidence = pat['confidence']
+                    break
+
+                if pat['departure'] == 'first' and pat['arrival'] == '':
+                    slotInfo['departure'] = location[0]
+                    slotInfo['nluState'] = 'u_departure_and_arrival'
+                    confidence = pat['confidence']
+                    break
+
+                if pat['departure'] == '' and pat['arrival'] == '':
+                    if slotInfo['newUsrDate']['desCity'] is not None or slotInfo['newUsrDate']['orgCity'] is not None:
+                        slotInfo['arrival'] = slotInfo['newUsrDate']['desCity']
+                        slotInfo['departure'] = slotInfo['newUsrDate']['orgCity']
+                        slotInfo['departureDate'] = slotInfo['newUsrDate']['departDate']
+                        slotInfo['nluState'] = 'u_departure_and_arrival'
+                    # elif slotInfo['lastCityMentioned'] is not None:
+                    #     slotInfo['arrival'] = slotInfo['lastCityMentioned']
+                    #     slotInfo['nluState'] = 'u_departure_and_arrival'
+                    elif slotInfo['lastCityMentioned'] is not None:
+                        slotInfo['nluState'] = 'u_to_last_mentioned_city'
+
+                    else:
+                        slotInfo['nluState'] = 'u_departure_and_arrival'
+
+                    confidence = pat['confidence']
+                    break
+            else:
+                continue
 
     if slotInfo['departure'] is not None and slotInfo['arrival'] is not None and slotInfo['departure'] == slotInfo['arrival']:
         slotInfo['nluState'] = 'u_departure_and_arrival_identical'

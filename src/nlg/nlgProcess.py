@@ -106,18 +106,15 @@ def sort_train_info(trainInforms, slotInfo):
 
 def nlg_process(severQuesFlag, slotInfo, rootPath):
     if slotInfo['nluState'] == 'u_book':
-        _, url = query_tickets(slotInfo, rootPath)
-        url = urllib.parse.unquote(url, encoding="utf-8")
-        print('CCCCCCCCCCCCCCCCCCCCCCCCCCC\n')
-        print(url)
+        # _, url = query_tickets(slotInfo, rootPath)
+        url = urllib.parse.unquote(slotInfo['url'], encoding="utf-8")
+        # print('CCCCCCCCCCCCCCCCCCCCCCCCCCC\n')
+        # print(url)
         url2 = str(url)
         bookLink = '<a target="_blank" href=' + '\"' + url2 + '\"' + '>立即订票</a>'
         bookLink = str(bookLink)
-        # bookLink = <a href="" target="_blank">立即订票</a>
-        # bookLink = '<a href=\"' + url + '\" target=\"_blank\">立即订票</a>'
-        # return gain_answer_pattern(severQuesFlag) + '\n' + url + '\n' + gain_answer_pattern('askMoreServices'), slotInfo
-        print('BBBBBBBBBBBBBBBBBBBBBBBBBB\n')
-        print(bookLink)
+        # print('BBBBBBBBBBBBBBBBBBBBBBBBBB\n')
+        # print(bookLink)
         return gain_answer_pattern(severQuesFlag) + bookLink + '\n' + gain_answer_pattern('askMoreServices'), slotInfo
     elif severQuesFlag in ['askToKnownCity', 'makeSureToLastMentionedCity']:
         severQues = gain_answer_pattern(severQuesFlag)
@@ -129,7 +126,7 @@ def nlg_process(severQuesFlag, slotInfo, rootPath):
         severQues = re.sub(r'<departure>', slotInfo['departure'], severQues)
         severQues = re.sub(r'<arrival>', slotInfo['arrival'], severQues)
 
-        train_info, _ = query_tickets(slotInfo, rootPath)
+        train_info, slotInfo['url'] = query_tickets(slotInfo, rootPath)
         train_info = list(sort_train_info(train_info, slotInfo))
         recommendation, firstStartTime, lastStartTime = generate_top3(train_info)
 

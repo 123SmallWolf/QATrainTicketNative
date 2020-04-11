@@ -58,16 +58,18 @@ def query_tickets(slotInfo, rootPath):
     q = requests.Session()
     url1 = init_url + '?' + payload
     # https://kyfw.12306.cn/otn/leftTicket/init?fs=%E5%8C%97%E4%BA%AC,BJP&linktypeid=dc&flag=N,N,Y&ts=%E9%94%A6%E5%B7%9E,JZD&data=2019-11-20
-    print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\n')
-    print(url1)
+    # print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\n')
+    # print(url1)
     r = q.get(url1, headers=headers)
 
     l = q.get(left_url, headers=headers)
 
+    assert json.loads(l.text)['data']['result'], '12306返回数据错误:[%s]' % l.text
+
     inf = js_transform(json.loads(l.text)['data']['result'], rootPath, slotInfo)
 
-    print('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD\n')
-    print(r.url)
+    # print('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD\n')
+    # print(r.url)
 
     return inf, r.url
 
@@ -189,8 +191,8 @@ if __name__ == '__main__':
     slotInfo = {}
     slotInfo['departure'] = '北京'
     slotInfo['arrival'] = '天津'
-    slotInfo['departureDate'] = '2019-10-23'
+    slotInfo['departureDate'] = '2020-02-23'
     slotInfo['trainType'] = 'N,N,Y'
-    result, url0 = query_tickets(slotInfo, r'C:\Users\80693\PycharmProjects\QATrainTicketNative')
+    result, url0 = query_tickets(slotInfo, r'C:\Users\80693\PycharmProjects2\QATrainTicket')
     pprint(result)
     print(url0)

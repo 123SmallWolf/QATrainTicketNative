@@ -12,7 +12,19 @@ import copy
 import re
 import logging
 
-SLOG = logging.getLogger('Frame')
+logger = logging.getLogger('Frame')
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s-%(name)s-%(levelname)s-%(message)s')
+
+fh = logging.FileHandler('logging.log')
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 whole_nlu_state = ['enter_domain', 'u_earlier', 'u_later', 'u_departure_and_arrival',
@@ -50,6 +62,7 @@ class Frame(object):
         slotDict['lastStartTime'] = None
         slotDict['lastCityMentioned'] = None
         slotDict['crossArea'] = None
+        slotDict['url'] = None
         slotDict['newUsrDate'] = {'orgCity': None, 'desCity': None, 'departDate': None}
 
         return slotDict
@@ -144,11 +157,12 @@ class Frame(object):
             elif severQuesGenerated == '请您输入出行信息':
                 self.__clear_inform()
                 self.newUserDate = {'orgCity': None, 'desCity': None, 'departDate': None}
-            print('AAAAAAAAAAAAAAAAAAAAAAAAAAAA\n')
-            print(severQuesGenerated)
+            # print('AAAAAAAAAAAAAAAAAAAAAAAAAAAA\n')
+            # print(severQuesGenerated)
             return severQuesGenerated, '{:.2f}'.format(self.confidence), self.slotInfo, self.slotInfo['sessionOver'], self.newUserDate
 
         else:
+            logger.info('当前聊天内容不在火车票domain')
             # self.__confidence_update('-')
             return None, '{:.2f}'.format(0.5), self.slotInfo, self.slotInfo['sessionOver'], self.newUserDate
 
@@ -157,19 +171,19 @@ class Frame(object):
             for pat in self.nluPattern[kind]:
                 regex = re.compile(pat['pattern'])
                 if regex.search(dialogue) is not None:
-                    cfd = pat['confidence']
-                    self.confidence = cfd
-                    return '{:.2f}'.format(self.confidence)
-                    # if kind == 'enter_domain':
-                    #     cfd = pat['confidence']
-                    #     self.confidence = cfd
-                    #     return '{:.2f}'.format(self.confidence)
-                    # elif self.slotInfo['nluState'] in whole_nlu_state:
-                    #     cfd = pat['confidence']
-                    #     self.confidence = cfd
-                    #     return '{:.2f}'.format(self.confidence)
-                    # else:
-                    #     return '{:.2f}'.format(0.5)
+                    # cfd = pat['confidence']
+                    # self.confidence = cfd
+                    # return '{:.2f}'.format(self.confidence)
+                    if kind == 'enter_domain':
+                        cfd = pat['confidence']
+                        self.confidence = cfd
+                        return '{:.2f}'.format(self.confidence)
+                    elif self.slotInfo['nluState'] in whole_nlu_state:
+                        cfd = pat['confidence']
+                        self.confidence = cfd
+                        return '{:.2f}'.format(self.confidence)
+                    else:
+                        return '{:.2f}'.format(0.5)
         else:
             if self.slotInfo['nluState'] in whole_nlu_state:
                 with open(self.rootPath + '/res/city_id.json', 'r', encoding='utf-8') as rj:

@@ -6,7 +6,7 @@
     { "level":42, "confidence": 0.90, "pattern":".*?(?:去|到)<city>.*?(?:火车票|车票|火车)", "departure":"", "arrival":"first", "departureDate":"", "attitude":"" },
     { "level":42, "confidence": 0.60, "pattern":"(?:目的地|目的城市|终点).*?<city>", "departure":"", "arrival":"first", "departureDate":"", "attitude":"" },
     { "level":42, "confidence": 0.60, "pattern":"(?:出发地|出发城市|始发地|始发城市|起点|起始).*?<city>", "departure":"first", "arrival":"", "departureDate":"", "attitude":"" },
-    { "level":42, "confidence": 0.90, "pattern":".*?(?<!不想)(?:订|买|抢|来|定|改|坐|乘).*?(?:火车票|火车).*?", "departure":"", "arrival":"", "departureDate":"", "attitude":"" }
+    { "level":42, "confidence": 0.90, "pattern":".*?(?<!不想)(?:订|买|抢|来|定|改|坐|乘|去|到).*?(?:火车票|火车).*?", "departure":"", "arrival":"", "departureDate":"", "attitude":"" }
   ],
   "tune_time":
   [
@@ -15,7 +15,7 @@
     { "level":42, "confidence": 0.65, "pattern":".*?(?:出发时间)?.*?(?:早一点|早一些|早点).*?", "departureDate":"", "departureTime":"-" },
     { "level":42, "confidence": 0.65, "pattern":".*?(?:上一组).*?", "departureDate":"", "departureTime":"-" },
     { "level":42, "confidence": 0.65, "pattern":".*?(?:出发时间)?.*?(?:晚一点|晚一些|晚点).*?", "departureDate":"", "departureTime":"+" },
-    { "level":42, "confidence": 0.65, "pattern":".*?(?:下一组|其他).*?", "departureDate":"", "departureTime":"+" },
+    { "level":42, "confidence": 0.65, "pattern":".*?(?:下一组|其他|别的).*?", "departureDate":"", "departureTime":"+" },
     { "level":42, "confidence": 0.65, "pattern":".*?(?:出发时间).*?(?:改).*?", "departureDate":"?", "departureTime":"?" },
     { "level":42, "confidence": 0.65, "pattern":".*?(?:今天|明天|后天|大后天).*?(?:上午|中午|下午|晚上|凌晨).*?(?:出发)?.*?", "departureDate":"?", "departureTime":"?" },
     { "level":42, "confidence": 0.65, "pattern":"(?<!今天|明天|后天|下周).*?(?:上午|中午|下午|晚上|凌晨).*?(?:出发)?.*?", "departureDate":"", "departureTime":"?" },
@@ -44,8 +44,8 @@
     { "level":42, "confidence": 0.90, "pattern":".*?(?:卧铺).*?", "trainType":["T", "K", "Z"]},
     { "level":42, "confidence": 0.90, "pattern":".*?(?:普快)和?(?:特快).*?", "trainType":["T", "K"]},
     { "level":42, "confidence": 0.90, "pattern":".*?(?:特快)和?(?:普快).*?", "trainType":["T", "K"]},
-    { "level":42, "confidence": 0.70, "pattern":".*?(?:都可以|都行|没有要求|无要求|全选).*?", "trainType":["D","G","T","K","Z","C"]},
-    { "level":42, "confidence": 0.70, "pattern":".*?(?:没有).*?", "trainType":["D","G","T","K","Z","C"]}
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:都可以|都行|没有要求|无要求|全选|所有车型).*?", "trainType":["D","G","T","K","Z","C"]},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?<!有)(?:没有).*?", "trainType":["D","G","T","K","Z","C"]}
   ],
   "seat_type":
   [
@@ -59,8 +59,8 @@
     { "level":42, "confidence": 0.90, "pattern":".*?(?:一等座|1等座).*?", "seatType":["一等座"]},
     { "level":42, "confidence": 0.90, "pattern":".*?(?:商务座).*?", "seatType":["商务座"]},
     { "level":42, "confidence": 0.90, "pattern":".*?(?:无座|站票).*?", "seatType":["无座"]},
-    { "level":42, "confidence": 0.70, "pattern":".*?(?:都可以|都行|没有要求|无要求|全选).*?", "seatType":["高级软卧", "软卧", "软座", "硬卧", "硬座", "二等座", "一等座", "商务座"]},
-    { "level":42, "confidence": 0.70, "pattern":".*?(?:没有).*?", "seatType":["高级软卧", "软卧", "软座", "硬卧", "硬座", "二等座", "一等座", "商务座"]}
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:都可以|都行|没有要求|无要求|全选|所有席别).*?", "seatType":["高级软卧", "软卧", "软座", "硬卧", "硬座", "二等座", "一等座", "商务座"]},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?<!有)(?:没有).*?", "seatType":["高级软卧", "软卧", "软座", "硬卧", "硬座", "二等座", "一等座", "商务座"]}
   ],
   "sequence":
   [
@@ -71,7 +71,7 @@
   "bookOrBye":
   [
     { "level":42, "confidence": 0.60, "pattern":".*?(?:预定|就这个|就选这个).*?", "attitude": "p"},
-    { "level":42, "confidence": 0.70, "pattern":".*?(?:买|定|订|选|购买|预定|选择)?[A-Za-z]+[0-9]+.*?[^点].*?", "attitude": "p"},
+    { "level":42, "confidence": 0.70, "pattern":".*?(?:买|定|订|选|购买|预定|选择)?[A-Za-z0-9]+.*?[^点].*?", "attitude": "p"},
     { "level":42, "confidence": 0.70, "pattern":".*?(?:买|定|订|选|购买|预定|选择)?[0-9]{4}.*?[^点].*?", "attitude": "p"},
     { "level":42, "confidence": 0.70, "pattern":".*?(?:买|定|订|选|购买|预定|选择)?第[一二三123]+.*?", "attitude": "p"},
     { "level":42, "confidence": 0.60, "pattern":".*?(?:退出|不定了|不买了|不订了|结束|不用|不需要|不必).*?", "attitude": "n"},

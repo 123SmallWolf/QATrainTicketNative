@@ -1,6 +1,6 @@
 import regex as re
 from src.nlp_tools.normalizeTime import TimeNormalizer
-from pyhanlp import *
+from pyhanlp import HanLP
 from itertools import groupby
 
 

@@ -5,8 +5,6 @@
 # @File    : RunOriginEdition.py
 from Frame import Frame
 from pprint import pprint
-from sysLog import setup_logging
-setup_logging()
 
 # server_date = {"place": [{"province": "山东省", "city": "青岛市", "departDate": "2019-11-11"}]}
 server_date = None
@@ -21,4 +19,4 @@ while True:
     answer, confidence, slotInf, isOver, _ = session.process(query, sessionBlock, server_date)
     sessionBlock = slotInf
     print('>>>[cfd:{:.2}] {}'.format(confidence, answer))
-    pprint(session.slotInfo)
+    # pprint(session.slotInfo)
